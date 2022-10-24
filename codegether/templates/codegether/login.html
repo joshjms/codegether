@@ -1,0 +1,40 @@
+{% extends 'codegether/base.html' %}
+
+{% block content %}
+<div class="min-h-screen w-full flex items-center justify-center">
+    <div class="w-96 border flex flex-col py-10 px-3 md:px-5 shadow-lg">
+        <h1 class="text-3xl font-bold text-center">Sign-in</h1>
+        <form method="POST" class="mt-5">
+            {% csrf_token %}
+            <div class="relative z-0 mb-6 w-full group">
+                <input type="text" name="username" id="username"
+                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    placeholder=" " required="" value="{% if form_state %}{{form_state.username}}{% endif %}">
+                <label for="username"
+                    class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Username</label>
+            </div>
+            <div class="relative z-0 mb-6 w-full group">
+                <input type="password" name="password" id="password"
+                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    placeholder=" " required="" value="">
+                <label for="password"
+                    class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Password</label>
+            </div>
+
+            {% if error %}
+            <div class="p-3 mb-4 text-xs text-red-700 bg-red-100 dark:bg-red-200 dark:text-red-800"
+                role="alert">
+                <span class="font-medium">Login Failed!</span> {{error}}
+            </div>
+            {% endif %}
+
+            <button type="submit"
+                class="bg-transparent hover:bg-gray-800 text-gray-800 font-semibold hover:text-white py-2 px-4 border border-gray-800 hover:border-transparent ease-in-out duration-300">
+                Submit
+            </button>
+        </form>
+
+        <p class="text-xs text-gray-400">Don't have an account? <a class="text-blue-500 font-semibold hover:underline" href="{% url 'register' %}">Sign-up</a> instead.</p>
+    </div>
+</div>
+{% endblock %}

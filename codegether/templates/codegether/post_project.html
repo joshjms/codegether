@@ -1,0 +1,72 @@
+{% extends 'codegether/base.html' %} {% block content %}
+<div class="min-h-screen w-full flex flex-wrap justify-center">
+    <div
+        class="h-full w-full md:w-[50%] flex justify-center flex-col py-10 px-3 md:px-5"
+    >
+        <h1 class="text-3xl font-bold text-center">Add Project</h1>
+        <form method="POST" class="my-10">
+            {% csrf_token %}
+            <input
+                type="text"
+                id='title'
+                name='title'
+                class="border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mb-5"
+                placeholder='Project Title'
+                value="{% if form_state.search %}{{form_state.name}}{% endif %}"
+                oninput="readTitle('title', 'display-title', 'Title goes here...')"
+            />
+
+            <div class="mb-4 w-full bg-gray-50 rounded-lg">
+                <div class="py-2 px-2 bg-white border border-gray-300">
+                    <label for="desc" class="sr-only">Content</label>
+                    <textarea
+                        id='content'
+                        rows="8"
+                        class="px-0 w-full text-sm text-gray-900 bg-white border-0 focus:ring-0"
+                        placeholder="Content (supports Markdown and HTML!)"
+                        name='content'
+                        oninput="readMarkdown('content', 'display-content', 'Content goes here...')"
+                    ></textarea>
+                </div>
+            </div>
+
+            <input
+                type="text"
+                id="skills"
+                name="skills"
+                class="border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mb-5"
+                placeholder="Skills"
+                value="{% if form_state.search %}{{form_state.skills}}{% endif %}"
+            />
+
+            <input
+                type="text"
+                id="github_url"
+                name="github_url"
+                class="border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mb-5"
+                placeholder="Github Repository Link"
+                value="{% if form_state.search %}{{form_state.github_url}}{% endif %}"
+            />
+
+            <button
+                type="submit"
+                class="bg-transparent hover:bg-gray-800 text-gray-800 font-semibold hover:text-white py-2 px-4 border border-gray-800 hover:border-transparent ease-in-out duration-300"
+            >
+                Submit
+            </button>
+        </form>
+    </div>
+    <div
+        class="h-screen w-full md:w-[50%] overflow-y-auto p-5 my-10"
+        id="display-markdown"
+    >
+        <div id='display-title'>
+            <h1 class="text-3xl text-gray-400 mb-5">Title goes here...</p>
+        </div>
+        <div id='display-content'>
+            <p class="text-gray-400">Content goes here...</p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

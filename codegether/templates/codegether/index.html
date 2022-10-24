@@ -1,0 +1,41 @@
+{% extends 'codegether/base.html' %}
+
+{% block content %}
+<div class="w-full my-10">
+
+    <div class="w-[80%] mx-[10%] mt-10">
+        <h1 class="text-3xl font-bold text-center">Codegether Portal</h1>
+        {% if user.is_authenticated %}
+        <p class="text-center mt-3">Welcome, {{user.username}}.</p>
+        {% else %}
+        <p class="text-center mt-3"><a href="{% url 'login' %}" class="text-blue-500 hover:underline">Sign-in</a> | <a href="{% url 'register' %}" class="text-blue-500 hover:underline">Sign-up</a></p>
+        {% endif %}
+
+        <div class="w-[80%] md:w-[60%] flex flex-wrap mx-[10%] md:mx-[20%] gap-4 items-center justify-center mt-10">
+            <div class="h-60 w-80 border flex flex-col justify-center items-center shadow-md hover:shadow-lg hover:-translate-y-3 ease-in-out duration-500">
+                <p class="text-5xl"><i class="fa-solid fa-book"></i></p>
+                <a href="{% url 'list' %}"><h3 class="text-2xl font-semibold text-center mt-3 hover:underline hover:cursor-pointer">Project Listings</h3></a>
+            </div>
+            <div class="h-60 w-80 border flex flex-col justify-center items-center shadow-md hover:shadow-lg hover:-translate-y-3 ease-in-out duration-500">
+                <p class="text-5xl"><i class="fa-solid fa-circle-plus"></i></p>
+                <a href="{% url 'create' %}"><h3 class="text-2xl font-semibold text-center mt-3 hover:underline hover:cursor-pointer">Add Project</h3></a>
+            </div>
+            <div class="h-60 w-80 border flex flex-col justify-center items-center shadow-md hover:shadow-lg hover:-translate-y-3 ease-in-out duration-500">
+                <p class="text-5xl"><i class="fa-solid fa-globe"></i></p>
+                <h3 class="text-2xl font-semibold text-center mt-3 hover:underline hover:cursor-pointer">Connect</h3>
+            </div>
+            {% if user.is_authenticated %}
+            <div class="h-60 w-80 border flex flex-col justify-center items-center shadow-md hover:shadow-lg hover:-translate-y-3 ease-in-out duration-500">
+                <img src="{{user.userprofile.pfp.url}}" class="w-20 h-20 rounded-full object-cover">
+                <a href="{{ user.userprofile.get_absolute_url }}"><h3 class="text-2xl font-semibold text-center mt-3 hover:underline hover:cursor-pointer">Profile</h3></a>
+            </div>
+            {% else %}
+            <div class="h-60 w-80 border flex flex-col justify-center items-center shadow-md hover:shadow-lg hover:-translate-y-3 ease-in-out duration-500">
+                <p class="text-5xl"><i class="fa-solid fa-right-to-bracket"></i></p>
+                <a href="{% url 'login' %}"><h3 class="text-2xl font-semibold text-center mt-3 hover:underline hover:cursor-pointer">Sign-In</h3></a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

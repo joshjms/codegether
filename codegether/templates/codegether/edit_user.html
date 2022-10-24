@@ -1,0 +1,103 @@
+{% extends 'codegether/base.html' %} {% block content %}
+
+<div class="min-h-screen w-full flex items-center justify-center">
+    <form
+        method="POST"
+        class="w-96 border flex flex-col py-10 px-3 md:px-5 shadow-lg items-center"
+        enctype="multipart/form-data"
+    >
+        {% csrf_token %}
+        <div
+            class="group hover:cursor-pointer flex w-40 h-40 items-center justify-center"
+        >
+            <img
+                class="w-40 h-40 mx-auto object-cover rounded-full group-hover:brightness-50 duration-300 ease-in-out"
+                src="{{profile.userprofile.pfp.url}}"
+                alt="{{profile.userprofile.username}}"
+                id="display-pfp"
+            />
+            <div class="flex absolute" onclick="changeProfilePicture()">
+                <p
+                    class="text-3xl text-white opacity-0 group-hover:opacity-100 duration-300 ease-in-out"
+                >
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </p>
+            </div>
+
+            <input
+                type="file"
+                class="hidden"
+                name="pfp"
+                id="pfp"
+                accept="image/jpeg, image/png"
+                onchange="displayNewPicture(this)"
+            />
+        </div>
+
+        <h1 class="text-3xl font-bold mt-5 text-center mb-3">
+            {{profile.username}}
+        </h1>
+
+        <div class="w-[80%] mb-5">
+            <h5 class="font-bold uppercase my-1">Bio</h5>
+            <div class="w-full py-1 px-2 bg-white border border-gray-300">
+                <textarea
+                    id="bio"
+                    rows="4"
+                    name="bio"
+                    class="px-0 w-full text-xs text-gray-900 bg-white border-0 focus:ring-0 text-xs resize-none font-bold"
+                    placeholder="A short description of who you are"
+                >{{profile.userprofile.bio}}</textarea>
+            </div>
+        </div>
+        
+
+        {% if error %}
+        <div
+            class="mt-3 p-3 text-xs text-red-700 bg-red-100 dark:bg-red-200 dark:text-red-800"
+            role="alert"
+        >
+            <span class="font-medium">Failed to change profile!</span> {{error}}
+        </div>
+        {% endif %}
+
+        <div class="flex justify-center gap-4 mt-3">
+            <button
+                type="submit"
+                class="w-12 h-12 bg-transparent hover:bg-green-800 text-gray-800 font-semibold hover:text-white py-2 px-4 border border-green-800 hover:border-transparent ease-in-out duration-300"
+            >
+                <i class="fa-sharp fa-solid fa-check"></i>
+            </button>
+            <a href="{{profile.userprofile.get_absolute_url}}">
+                <button
+                    type="button"
+                    class="w-12 h-12 bg-transparent hover:bg-red-800 text-gray-800 font-semibold hover:text-white py-2 px-4 border border-red-800 hover:border-transparent ease-in-out duration-300"
+                >
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </a>
+        </div>
+    </form>
+</div>
+
+<script>
+    const changeProfilePicture = () => {
+        inputPFP = document.getElementById("pfp");
+        inputPFP.click();
+    };
+
+    const displayNewPicture = (input) => {
+        if (input.files && input.files[0]) {
+            let reader = new FileReader();
+
+            reader.onload = (e) => {
+                display = document.getElementById("display-pfp");
+                display.src = e.target.result;
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    };
+</script>
+
+{% endblock %}

@@ -1,0 +1,107 @@
+{% extends 'codegether/base.html' %}
+
+{% block content %}
+<h1 class="text-3xl font-bold mt-10 ml-3">Project Listings</h1>
+
+<div class="w-full mx-3 mt-3">
+    <form method="GET" class="">
+        <div class="w-96 flex mb-6">
+            <input type="text" id="search" name="search"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                placeholder="Front-end Javascript ..."
+                value="{% if form_state.search %}{{form_state.search}}{% endif %}">
+            <button type="submit"
+                class="bg-transparent hover:bg-gray-800 text-gray-800 font-semibold hover:text-white py-2 px-4 border border-gray-800 hover:border-transparent ease-in-out duration-300">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+        </div>
+
+        <div class="flex gap-3">
+            <button type="button" class="py-2 px-3 text-sm" disabled>Order By</button>
+            <div>  
+                <button type="submit" class="py-2 px-3 text-sm border rounded hover:bg-gray-100" onClick="handleClick('latest')">Latest</button>
+                <input type="radio" id="latest" name="sort" value="latest" class="hidden" {% if form_state.sort == 'latest'%} checked {% endif %}>
+            </div>
+            <div>  
+                <button type="submit" class="py-2 px-3 text-sm border rounded hover:bg-gray-100" onClick="handleClick('popular')">Popular</button>
+                <input type="radio" id="popular" name="sort" value="popular" class="hidden" {% if form_state.sort == 'popular'%} checked {% endif %}>
+            </div>
+        </div>
+
+        <nav class="w-full flex justify-center items-center">
+            <ul class="inline-flex items-center -space-x-px">
+                {% for page_num in projects.paginator.page_range %}
+                <li class="">
+                    <button type="submit" onClick="handleClick('{{page_num}}')" {% if page_num|slugify == cur_page|slugify %}disabled{%endif%}
+                        class="py-2 px-3 w-10 leading-tight {% if page_num|slugify == cur_page|slugify %}bg-gray-100{% endif %} text-gray-500 hover:text-gray-700 hover:bg-gray-100 border">{{page_num}}</button>
+                    <input type="radio" id="{{page_num}}" name="page" value={{page_num}} class="hidden" {% if page_num|slugify == cur_page|slugify %} checked {% endif %}>
+                </li>
+                {% endfor %}
+            </ul>
+        </nav>
+    </form>
+</div>
+
+<div class="overflow-x-auto relative shadow-md mt-3 mb-10 mx-3">
+    <table class="w-full text-left text-gray-500 border">
+        <thead class="text-sm text-gray-700 bg-gray-50 uppercase">
+            <tr>
+                <th scope="col" class="py-8 px-6">
+                    Project Name
+                </th>
+                <th scope="col" class="py-3 px-6">
+                    Creator
+                </th>
+                <th scope="col" class="py-3 px-6">
+                    Skills
+                </th>
+                <th scope="col" class="py-3 px-6">
+                    Upvotes
+                </th>
+                <th scope="col" class="py-3 px-6">
+                    <span class="sr-only">Edit</span>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for project in projects %}
+            <tr class="bg-white border">
+                <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap">
+                    <a href="{{ project.get_absolute_url }}" class="hover:underline">{{project.name}}</a>
+                </th>
+                <td class="py-4 px-6">
+                    <a href="{% url 'profile' project.creator.username %}" class="hover:underline">{{project.creator.username}}</a>
+                </td>
+                <td class="py-4 px-6">
+                    {{project.requirements}}
+                </td>
+                <td class="py-4 px-6">
+                    {{project.upvotes.count}}
+                </td>
+                <td class="py-4 px-6 text-right">
+                    <a href="{% url 'upvote' pid=project.id %}"
+                        class="font-medium {% if user.userprofile in project.upvotes.all %} text-red-500 {% endif %} hover:underline"><i
+                            class="fa-solid fa-heart"></i></a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr class="bg-white border">
+                <td class="py-4 px-6">
+                    <p>No projects found.</p>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+</div>
+
+<script>
+    const handleClick = (p) => {
+        const e=document.getElementById(`${p}`);
+        e.checked='true';
+    }
+</script>
+
+{% endblock %}

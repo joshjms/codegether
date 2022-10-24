@@ -1,0 +1,27 @@
+{% extends 'codegether/base.html' %} {% block content %}
+<div class="w-full my-10">
+    <div class="w-[80%] mx-[10%] mt-5">
+        <h1 class="text-3xl font-bold">{{project.name}}</h1>
+
+        <div class="">
+            <div class="mt-10">
+                <div id="content">{{content | safe}}</div>
+            </div>
+
+            <div class="mt-10">
+                <h3 class="text-2xl font-semibold mb-5">GitHub Link</h3>
+                {% if project.github_url %}
+                <p>{{project.github_url}}</p>
+                {% else %}
+                <p>No GitHub link was provided.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    reloadMarkdown('content')
+</script>
+
+{% endblock %}
