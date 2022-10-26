@@ -27,7 +27,10 @@ SECRET_KEY = 'django-insecure-o5nd9on9!g&oocg=7e%us^rkxa-6620h&!f#-e3tp^w49y^_j#
 DEBUG = True
 
 ALLOWED_HOSTS = [
-
+    'localhost',
+    '0.0.0.0',
+    '127.0.0.1',
+    'codegether-app.herokuapp.com',
 ]
 
 
